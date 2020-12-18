@@ -1,0 +1,398 @@
+<title>商品管理</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>商品管理</cite></a>
+    </div>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">Goods DEMO</div>
+                <div class="layui-card-body">
+                    <div class="layui-form">
+                        <div class="test-table-reload-btn" style="margin-bottom: 10px;">
+                            订单号:&nbsp;&nbsp;&nbsp;
+                            <div class="layui-inline">
+                                <input class="layui-input" name="orderId" id="orderId" autocomplete="on">
+                            </div>
+                            <div class="layui-inline">
+
+                                <script type="text/html" template
+                                        lay-url="{{layui.setter.baseUrl}}/commerce/order/orderStatusDict"
+                                        lay-type="post" lay-done="layui.data.done(d);">
+                                    &nbsp;&nbsp;&nbsp;订单状态:
+                                    <div class="layui-input-inline">
+                                        <select name="orderStatus" id="orderStatus" class="layui-input">
+                                            <option value="">请选择</option>
+                                            {{# layui.each(d.data, function(index, item){ }}
+                                            <option value={{item.value}}>{{item.label}}</option>
+                                            {{# }) }}
+                                        </select>
+                                    </div>
+                                </script>
+                                <script>
+                                    layui.data.done = function(d){
+                                        layui.use(['form'], function(){
+                                            var form = layui.form;
+                                            form.render('select'); //渲染该模板下的动态表单
+                                        });
+                                    };
+                                </script>
+                            </div>
+                            商品名称:
+                            <div class="layui-inline">
+                                <input class="layui-input" name="goodsName" id="goodsName" autocomplete="on">
+                            </div>
+                            一段物流编号:
+                            <div class="layui-inline">
+                                <input class="layui-input" name="firstCommerceOrder" id="firstCommerceOrder"
+                                       autocomplete="on">
+                            </div>
+                            <div class="layui-row" style="margin-top: 10px;">
+                                <div class="layui-col-md2 layui-col-md-offset10">
+                                    <button id="btnSearch" class="layui-btn">搜索</button>
+                                    <button id="btnReset" class="layui-btn">重置</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <table class="layui-hide" id="purchase-table" lay-filter="purchase-table"></table>
+                    <!-- 头部工具栏 -->
+                    <script type="text/html" id="purchase-toolbar">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm" lay-event="doAdd">新增</button>
+                        </div>
+                    </script>
+                    <!-- 表格操作按钮 -->
+                    <script type="text/html" id="purchase-tool">
+                        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+                        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                    </script>
+                    <script type="text/html" id="order-status">
+                        <button class="layui-btn layui-btn-xs">{{d.orderStatus}}</button>
+                    </script>
+
+                    <script type="text/html" id="trans-style">
+                        <button class="layui-btn layui-btn-xs layui-btn-normal">{{d.purchaseTransStyle}}</button>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    layui.use(['index', 'table', 'treetable', 'form', 'dtree'], function () {
+        var admin = layui.admin;
+        var table = layui.table;
+        var treetable = layui.treetable;
+        var $ = layui.$;
+        var setter = layui.setter;
+        var view = layui.view;
+        var form = layui.form;
+        var dtree = layui.dtree;
+
+
+        /**
+         * 表格参数
+         */
+        var Page = {
+            tableId: 'purchase-table',
+            url: setter.baseUrl + '/commerce/goods/datagrid',
+            // toolbar: '#purchase-toolbar',
+            // toolbar:true,
+            cellMinWidth: 90,
+            where: {field: 'createDate', order: 'desc'},
+            initColumn: function () {
+                return [[
+                    {type: 'numbers'}
+                    , {field: 'id', title: 'ID', hide: true}
+                    , {field: 'orderId', title: '订单号', sort: true}
+                    , {field: 'goodsName', title: '商品名称'}
+                    , {field: 'purchaseOrderNo', title: '采购单号'}
+                    , {field: 'purchaseAmount', title: '采购金额' }
+                    , {field: 'purchaseTransStyle', title: '采购运输方式', templet: "#trans-style"}
+                    , {field: 'purchaseStatus', title: '采购状态'}
+                    , {field: 'memo', title: '备注信息'}
+                    , {
+                        field: 'createDate',
+                        title: '创建时间',
+                        templet: '<div>{{ layui.laytpl.toDateString(d.createDate) }}</div>'
+                    }
+                    , {fixed: 'right', title: '操作', toolbar: '#purchase-tool'}
+                ]];
+            },
+            addUrl: setter.baseUrl + "/commerce/goods/save",
+            deleteUrl: setter.baseUrl + "/commerce/goods/delete"
+
+        };
+
+        /**
+         * 页面查询
+         */
+        Page.searchAction = function () {
+            var queryData = {};
+            //查询字段
+            queryData['orderId'] = $("#orderId").val();
+            queryData['orderStatus'] = $("#orderStatus").val();
+            queryData['goodsName'] = $("#goodsName").val();
+            queryData['firstCommerceOrder'] = $("#firstCommerceOrder").val();
+            //排序字段
+            queryData['field'] = 'createDate';
+            queryData['order'] = 'desc';
+
+            table.reload(Page.tableId, {where: queryData});
+        }
+
+
+        /**
+         * 页面查询条件的重置
+         */
+        Page.resetAction = function () {
+            $(".layui-input").val('');
+            $("#deptId").val('');
+            Page.searchAction();
+        }
+
+
+        /**
+         * 表格的单击事件
+         */
+        Page.clickAction = function (obj) {
+
+        }
+
+        /**
+         * 表格的双击事件
+         */
+        Page.doubleClickAction = function (obj) {
+
+        }
+
+
+        /**
+         * 新增
+         */
+        Page.openAdd = function () {
+            admin.popup({
+                title: '新增',
+                id: 'purchase-detail',
+                area: ['900px', '900px'],
+                btn: ['确定', '取消'],
+                success: function (layero, index) {
+                    view(this.id).render('commerce/purchase/sub').done(function () {
+                        form.render(null, 'purchase-detail');
+
+                        //监听提交
+                        form.on('submit(purchase-save)', function (data) {
+                            var field = data.field; //获取提交的字段
+                            //提交 Ajax 成功后，关闭当前弹层并重载表格
+
+                            admin.req({
+                                url: Page.addUrl
+                                , type: 'post'
+                                , data: field
+                                , done: function (res) { //这里要说明一下：done 是只有 response 的 code 正常才会执行。而 succese 则是只要 http 为 200 就会执行
+                                    if (res.success) {
+                                        CXL.success(res.msg);
+                                        //刷新表格
+                                        Page.searchAction();
+                                        //执行关闭
+                                        layer.close(index);
+                                    } else {
+                                        CXL.warn(res.msg);
+                                    }
+                                }
+                            });
+
+                        });
+                    });
+                },
+                yes: function (index, layero) {
+                    $("#purchase-save").click();
+                }
+            });
+        };
+
+        /**
+         * 编辑
+         */
+        Page.openEdit = function (data) {
+            admin.popup({
+                title: '编辑',
+                id: 'purchase-detail',
+                area: ['900px', '900px'],
+                btn: ['确定', '取消'],
+                success: function (layero, index) {
+                    view(this.id).render('commerce/purchase/sub', data).done(function () {
+                        form.render(null, 'purchase-detail');
+
+                        //监听提交
+                        form.on('submit(purchase-save)', function (data) {
+                            var field = data.field; //获取提交的字段
+                            //提交 Ajax 成功后，关闭当前弹层并重载表格
+
+                            //修改开关的值on或""
+                            if (field.status == "on") {
+                                field.status = "1";
+                            } else {
+                                field.status = "0";
+                            }
+
+                            admin.req({
+                                url: Page.addUrl
+                                , type: 'post'
+                                , data: field
+                                , done: function (res) { //这里要说明一下：done 是只有 response 的 code 正常才会执行。而 succese 则是只要 http 为 200 就会执行
+                                    if (res.success) {
+                                        CXL.success(res.msg);
+                                        //刷新表格
+                                        Page.searchAction();
+                                        //执行关闭
+                                        layer.close(index);
+                                    } else {
+                                        CXL.warn(res.msg);
+                                    }
+                                }
+                            });
+
+                        });
+                    });
+                },
+                yes: function (index, layero) {
+                    $("#purchase-save").click();
+                }
+            });
+        };
+
+        /**
+         * 查看
+         */
+        Page.openDetail = function (data) {
+            admin.popup({
+                title: '查看',
+                id: 'purchase-detail',
+                area: ['900px', '900px'],
+                success: function (layero, index) {
+                    view(this.id).render('commerce/purchase/sub', data).done(function () {
+                        form.render(null, 'purchase-detail');
+                    });
+                }
+            });
+        }
+
+        /**
+         * 删除表格数据
+         */
+        Page.deleteAction = function (obj) {
+            layer.confirm('真的确定要删除么', function (index) {
+
+                //提交 Ajax进行后端删除
+                admin.req({
+                    type: "post",
+                    url: Page.deleteUrl,
+                    data: {id: obj.data.id},
+                    done: function (res) {
+                        if (res.success) {
+                            CXL.success(res.msg);
+                            //表格删除
+                            obj.del();
+                        } else {
+                            CXL.warn(res.msg);
+                        }
+                    }
+                });
+
+                layer.close(index);
+            });
+        }
+
+
+        /**
+         * 表格渲染
+         */
+        table.render({
+            elem: '#' + Page.tableId
+            , url: Page.url
+            , height: 'full-180'
+            , page: true
+            , limit: 30
+            , autoSort: false
+            , toolbar: Page.toolbar
+            , where: Page.where
+            , defaultToolbar: []
+
+            , cols: Page.initColumn()
+        });
+
+        /**
+         * 表头工具栏
+         */
+        table.on('toolbar(' + Page.tableId + ')', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'doAdd':
+                    Page.openAdd();
+                    break;
+            }
+            ;
+        });
+
+        /**
+         * 监听表格工具事件
+         */
+        table.on('tool(' + Page.tableId + ')', function (obj) {
+            //获得当前行数据
+            var data = obj.data;
+            //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var layEvent = obj.event;
+
+            //查看操作
+            if (layEvent === 'detail') {
+                Page.openDetail(data);
+            }
+            //删除操作
+            else if (layEvent === 'del') {
+                Page.deleteAction(obj);
+            }
+            //编辑操作
+            else if (layEvent === 'edit') {
+                Page.openEdit(data);
+            }
+        });
+
+
+        /**
+         * 搜索按钮事件
+         */
+        $('#btnSearch').click(function () {
+            Page.searchAction();
+        });
+
+        /**
+         * 搜索按钮事件
+         */
+        $('#btnReset').click(function () {
+            Page.resetAction();
+        });
+
+        //监听行单击事件
+        table.on('row(' + Page.tableId + ')', function (obj) {
+            Page.clickAction(obj);
+        });
+
+        //监听行双击事件
+        table.on('rowDouble(' + Page.tableId + ')', function (obj) {
+            Page.doubleClickAction(obj);
+        });
+
+
+    });
+
+
+</script>

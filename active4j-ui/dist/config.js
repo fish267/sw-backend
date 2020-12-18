@@ -16,7 +16,7 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
     ,engine: '.html' //视图文件后缀名
     ,pageTabs: false //是否开启页面选项卡功能。单页版不推荐开启
     
-    ,name: 'active4j'
+    ,name: 'DEMO'
     ,tableName: 'layuiAdmin' //本地存储表名
     ,MOD_NAME: 'admin' //模块事件名
     ,baseUrl:'http://localhost:9004/demo'  //前后端分离的后端请求地址

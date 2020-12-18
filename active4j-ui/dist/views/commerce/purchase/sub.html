@@ -1,0 +1,125 @@
+<div class="layui-form" lay-filter="purchase-detail" id="purchase-detail" style="padding: 20px 30px 0 0;">
+    <script type="text/html" template>
+        <input type="hidden" name="id" value="{{ d.params.id || '' }}">
+    </script>
+    <div class="layui-form-item">
+        <label class="layui-form-label">订单编号</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input disabled type="text" value="18767773842" name="orderId" value="{{ d.params.orderId|| '' }}"
+                       lay-verify="required" placeholder="orderId" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品名称</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" disabled name="goodsName" value="{{ d.params.goodsName || ''}}"
+                       lay-verify="required" placeholder="goodsName" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">采购单号</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="purchaseOrderNo" value="{{ d.params.purchaseOrderNo || ''}}" lay-verify=""
+                       placeholder="purchaseName" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">采购状态</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="purchaseStatus" value="{{ d.params.purchaseStatus || ''}}" lay-verify=""
+                       placeholder="purchaseName" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">采购金额</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="number" name="purchaseAmount" value="{{ d.params.purchaseAmount || ''}}" lay-verify=""
+                       placeholder="purchaseName" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">运输方式</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template lay-url="{{layui.setter.baseUrl}}/commerce/goods/deliveryStyleDict"
+                    lay-done="layui.data.done(d);">
+                <select name="purchaseTransStyle">
+                    {{# layui.each(d.data, function(index, item){ }}
+                    <option value={{item.value}} {{ d.params.purchaseTransStyle=== item.label ?
+                    'selected' : '' }}>{{item.label}}</option>
+                    {{# }) }}
+                </select>
+            </script>
+            <script>
+                layui.data.done = function (d) {
+                    layui.use(['form'], function () {
+                        var form = layui.form;
+                        form.render('select'); //渲染该模板下的动态表单
+                    });
+                };
+            </script>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">一段物流单号</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <textarea name="firstCommerceOrder" style="width: 400px; height: 100px;" autocomplete="off"
+                          placeholder="memo" class="layui-textarea">{{ d.params.firstCommerceOrder || '' }}</textarea>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">采购地址</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <textarea name="purchaseAddress" style="width: 400px; height: 100px;" autocomplete="off"
+                          placeholder="memo" class="layui-textarea">{{ d.params.purchaseAddress || '' }}</textarea>
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注信息</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <textarea name="memo" style="width: 400px; height: 100px;" autocomplete="off" placeholder="memo"
+                          class="layui-textarea">{{ d.params.memo || '' }}</textarea>
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="purchase-save" id="purchase-save" value="保存">
+        <input type="button" lay-submit lay-filter="sys-user-cancel" id="sys-user-cancel" value="取消">
+    </div>
+</div>
+
+<script type="text/javascript">
+    layui.use('dtree', function () {
+        var $ = layui.$;
+        var admin = layui.admin;
+        var view = layui.view;
+        var setter = layui.setter;
+        var dtree = layui.dtree;
+        var layer = layui.layer;
+        var form = layui.form;
+
+    })
+</script>
