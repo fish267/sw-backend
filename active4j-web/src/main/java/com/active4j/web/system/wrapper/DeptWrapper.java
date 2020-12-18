@@ -5,7 +5,8 @@ import java.util.List;
 import com.active4j.entity.base.wrapper.BaseTableWrapper;
 import com.active4j.entity.system.entity.SysDepartEntity;
 import com.active4j.service.system.util.SystemUtils;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+
 public class DeptWrapper extends BaseTableWrapper<SysDepartEntity>{
 	
 	public DeptWrapper(List<SysDepartEntity> pageResult) {

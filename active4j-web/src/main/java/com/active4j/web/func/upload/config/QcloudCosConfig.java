@@ -1,11 +1,11 @@
 package com.active4j.web.func.upload.config;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.active4j.web.func.upload.properties.QcloudCosProperties;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;

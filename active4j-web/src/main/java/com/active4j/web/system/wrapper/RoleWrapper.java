@@ -4,7 +4,8 @@ import java.util.List;
 
 import com.active4j.entity.base.wrapper.BaseTableWrapper;
 import com.active4j.entity.system.entity.SysRoleEntity;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+
 public class RoleWrapper extends BaseTableWrapper<SysRoleEntity>{
 	
 	public RoleWrapper(List<SysRoleEntity> pageResult) {

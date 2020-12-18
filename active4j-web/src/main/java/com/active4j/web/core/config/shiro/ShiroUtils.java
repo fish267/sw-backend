@@ -1,6 +1,7 @@
 package com.active4j.web.core.config.shiro;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.session.Session;
@@ -8,7 +9,6 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 
 import com.active4j.entity.base.model.ActiveUser;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 
 
 /**
