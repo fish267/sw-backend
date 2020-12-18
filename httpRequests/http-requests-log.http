@@ -1,0 +1,16 @@
+GET http://localhost:9004/demo/sw/order-detail/all
+Accept: */*
+Cache-Control: no-cache
+
+<> 2020-11-27T054308.200.json
+
+###
+
+GET http://localhost:9004/demo/sw/order-detail/all
+Accept: */*
+Cache-Control: no-cache
+
+<> 2020-11-27T052146.200.xml
+
+###
+

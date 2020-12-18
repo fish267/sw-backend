@@ -44,6 +44,16 @@
 			<artifactId>mysql-connector-Java</artifactId>
 			<version>5.1.35</version>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.baomidou</groupId>-->
+<!--			<artifactId>mybatis-plus-generator</artifactId>-->
+<!--			<version>3.4.1</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.freemarker</groupId>-->
+<!--			<artifactId>freemarker</artifactId>-->
+<!--			<version>2.3.30</version>-->
+<!--		</dependency>-->
 	</dependencies>
 
 	<build>
