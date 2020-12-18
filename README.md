@@ -1,5 +1,16 @@
+## sw-backend
+
+Software 练手项目，记录与维护面试题目，顺便看下开源代码
+
+## 练习与思考
+
+第1题：Serializable 有几个方法？分别作用是什么？
+第2题：HashMap和ArrayList的初始化容量分别为多大？
+第3题：Arrays.asList()返回的集合，能够删除元素吗？
+第4题：Object几个方法，重载算一个。
 
 
+## 保留官方 Readme
 
 ![active4j](https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/active4jboot/logo.png "active4j")
 
@@ -122,67 +133,4 @@ active4j
 |layui.layer|弹出组件|[https://www.layui.com/doc/modules/layer.html](https://www.layui.com/doc/modules/layer.html "https://www.layui.com/doc/modules/layer.html")|
 |layui.treeTable|树形表格|[https://fly.layui.com/jie/30625/](https://fly.layui.com/jie/30625/ "https://fly.layui.com/jie/30625/")|
 
-# 功能列表
-```html
-- 项目主页：介绍项目简介、技术介绍、更新日志等信息
-    ○ 示例主页一
-    ○ 示例主页二
-    ○ 示例主页三
-- 系统管理
-    ○ 用户管理：用于管理后台系统的用户，可进行增删改查等操作
-    ○ 部门管理：通过不同的部门来管理和区分用户
-    ○ 菜单管理：维护系统菜单，操作权限，按钮权限
-    ○ 角色管理：维护系统角色信息，以角色为单位分配系统权限
-    ○ 数据字段管理：对系统中经常使用的一些较为固定的数据进行维护，如：是否、男女、类别、级别等
-    ○ 日志管理：系统正常操作日志记录和查询；系统异常信息日志记录和查询
-- 系统监控
-    ○ Druid连接池监控：监视当前系统数据库连接池状态，可进行分析SQL找出系统性能瓶颈
-    ○ 服务器监控：显示服务器内存信息、CPU信息、磁盘信息、JVM信息等性能指标
-    ○ 在线用户列表：显示在线用户信息
-- 常用功能
-    ○ 邮件发送：集成邮件发送功能，富文本编辑器支持，发送普通文本，HTML文本等
-    ○ 微信支付：集成微信native支付功能
-    ○ 支付宝支付：集成支付宝网站二维码支付功能
-    ○ 短信服务
-        •阿里云短信：集成阿里云短信SDK
-        •腾讯云短信：集成腾讯云短信SDK
-        •云潮云短信：集成云潮云短信SDK
-    ○ 定时任务：支持注解配置定时任务，支持动态维护定时任务，引入Quartz分布式定时调度
-    ○ 富文本编辑器：集成layui社区的layedit、kz.layedit、tinymce编辑器
-    ○ 上传下载：集成普通文件上传、图片上传、多文件上传、拖动上传、腾讯云COS存储等功能
-    ○ 导入导出：引入POI工具，整合excel等导入导出功能
-    ○ 系统消息：支持发送系统消息
-    ○ 验证码：集成google验证码插件，支持算术验证码、动态验证码
-- 前端实例组件
-    ○ 格栅
-    ○ 按钮
-    ○ 表单
-    ○ 导航
-    ○ 选项卡
-    ○ 进度条
-    ○ 面板
-    ○ 徽章
-    ○ 时间线
-    ○ 动画
-    ○ 辅助
-    ○ 通用弹出层
-    ○ 上传
-    ○ 时间日期
-    ○ 数据表格
-    ○ 分页
-    ○ 滑块
-    ○ 评分
-    ○ 轮播
-    ○ 流加载
-    ○ 工具
-    ○ 代码修饰
-    ○ 颜色选择器
-```
 
-# 更新日志
-## 2020-3-12 active4jboot版本发布
-# 版权声明
-Active4j使用 MIT License 协议.
-
-# 演示截图
-![active4j-boot-01](https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/active4jboot/boot-1.png "active4j-boot-01")![active4j-boot-02](https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/active4jboot/boot-2.png "active4j-boot-02")![active4j-boot-03](https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/active4jboot/boot-3.png "active4j-boot-03")![active4j-boot-04](https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/active4jboot/boot-4.png "active4j-boot-04")![active4j-boot-05](https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/active4jboot/boot-5.png "active4j-boot-05")![active4j-boot-06](https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/active4jboot/boot-6.png "active4j-boot-06")![active4j-boot-07](https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/active4jboot/boot-7.png "active4j-boot-07")![active4j-boot-08](https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/active4jboot/boot-8.png "active4j-boot-08")![active4j-boot-09](https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/active4jboot/boot-9.png "active4j-boot-09")![active4j-boot-10](https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/active4jboot/boot-10.png "active4j-boot-10")![active4j-boot-11](https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/active4jboot/boot-11.png "active4j-boot-11")![active4j-boot-12](https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/active4jboot/boot-12.png "active4j-boot-12")![active4j-boot-13](https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/active4jboot/boot-13.png "active4j-boot-13")![active4j-boot-14](https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/active4jboot/boot-14.png "active4j-boot-14")![active4j-boot-15](https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/active4jboot/boot-15.png "active4j-boot-15")![active4j-boot-16](https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/active4jboot/boot-16.png "active4j-boot-16")
