@@ -4,10 +4,12 @@ Software 练手项目，记录与维护面试题目，顺便看下开源代码
 
 ## 练习与思考
 
+```java
 第1题：Serializable 有几个方法？分别作用是什么？
 第2题：HashMap和ArrayList的初始化容量分别为多大？
 第3题：Arrays.asList()返回的集合，能够删除元素吗？
 第4题：Object几个方法，重载算一个。
+```
 
 
 ## 保留官方 Readme
