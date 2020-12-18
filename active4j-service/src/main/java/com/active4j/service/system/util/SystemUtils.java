@@ -1,9 +1,10 @@
 package com.active4j.service.system.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 
 /**
  * 系统工具类
