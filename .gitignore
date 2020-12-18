@@ -4,3 +4,9 @@
 /.factorypath
 /.classpath
 /.settings/
+.DS_Store
+*.iml
+/active4j-ui/.idea/
+*.ipr
+*.iws
+*.properties

@@ -4,20 +4,20 @@
 ![active4j](https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/active4jboot/logo.png "active4j")
 
 
-Active4j-Boot是基于SpingBoot2.0轻量级的java快速开发框架。以Spring Framework为核心容器，Spring MVC为模型视图控制器，Mybatis Plus为数据访问层， Apache Shiro为权限授权层, Redis为分布式缓存，Quartz为分布式集群调度，beetl为模版引擎，layui作为前端框架的开源框架。
+Active4j-boot是基于SpingBoot2.0轻量级的java快速开发框架。以Spring Framework为核心容器，Spring MVC为模型视图控制器，Mybatis Plus为数据访问层， Apache Shiro为权限授权层, Redis为分布式缓存，Quartz为分布式集群调度,layui作为前端框架并进行前后端分离的开源框架。
 
 
 
 ------------
 
 # 项目介绍
- - Active4j-Boot是基于SpingBoot2.0轻量级的java快速开发框架。以Spring Framework为核心容器，Spring MVC为模型视图控制器，Mybatis Plus为数据访问层， Apache Shiro为权限授权层, Redis为分布式缓存，Quartz为分布式集群调度，beetl为模版引擎，layui作为前端框架的开源框架。
- - Active4j-Boot目前内置了部门管理、用户管理、角色管理、菜单管理、数据数据字典、定时任务、常用系统监控等基础功能，并内置了文件上传下载、导入导出、微信支付、支付宝支付、短信功能、邮件发送等常用工具，整合了layui前端常用组件。
- - Active4j-Boot定位于企业快速开发平台建设，代码全部开源，持续更新，共同维护。Active4j可以应用在任何J2EE的项目开发中，尤其适合企业信息管理系统（MIS），企业办公系统（OA），客户关系管理系统（CRM），内容管理系统（CMS）等。
+ - Active4j是基于SpingBoot2.0轻量级的java快速开发框架。以Spring Framework为核心容器，Spring MVC为模型视图控制器，Mybatis Plus为数据访问层， Apache Shiro为权限授权层, Redis为分布式缓存，Quartz为分布式集群调度，layui作为前端框架并进行前后端分离的开源框架。
+ - Active4j目前内置了部门管理、用户管理、角色管理、菜单管理、数据数据字典、定时任务、常用系统监控等基础功能，并内置了文件上传下载、导入导出、短信功能、邮件发送等常用工具，整合了layui前端常用组件。
+ - Active4j定位于企业快速开发平台建设，代码全部开源，持续更新，共同维护。Active4j可以应用在任何J2EE的项目开发中，尤其适合企业信息管理系统（MIS），企业办公系统（OA），客户关系管理系统（CRM），内容管理系统（CMS）等。
 
 # 技术文档
 - 讨论加群：qq群①：203802692   qq群②：773872959
-- 演示地址：[http://www.active4j.com:9001/boot](http://www.active4j.com:9001/boot "http://www.active4j.com:9001/boot")
+- 演示地址：[http://www.active4j.com:9003/demo](http://www.active4j.com:9003/demo "http://www.active4j.com:9003/demo")
 - 官方网站：[www.active4j.com](http://www.active4j.com "www.active4j.com")
 - 文档地址：[http://www.active4j.com/doc.html](http://www.active4j.com/doc.html "http://www.active4j.com/doc.html")
 
@@ -35,46 +35,63 @@ Active4j-Boot是基于SpingBoot2.0轻量级的java快速开发框架。以Spring
 | OA办公系统github|[https://github.com/yunchaoyun/active4j-oa](https://github.com/yunchaoyun/active4j-oa "https://github.com/yunchaoyun/active4j-oa")|
 |OA办公系统gitee|[https://gitee.com/active4j/active4j-oa](https://gitee.com/active4j/active4j-oa "https://gitee.com/active4j/active4j-oa")|
 
-# 案例展示
-买我 小程序
-![买我小程序](https://zh-card-1251505225.cos.ap-shanghai.myqcloud.com/%E4%B9%B0%E6%88%91%E5%B0%8F%E7%A8%8B%E5%BA%8F.jpg "买我小程序")
-买我 ios版
-<img src="https://zh-card-1251505225.cos.ap-shanghai.myqcloud.com/IOS%E7%9B%B4%E5%85%85%E4%BA%8C%E7%BB%B4%E7%A0%81.png" width=256 height=256 />
-
 # 项目特点
 - 开箱即用，节省开发时间，提高开发效率
 - 代码全部开源，持续更新，共同维护
 - 基于SpringBoot，简化了大量项目配置和maven依赖，让您更专注于业务开发
-- 使用分层设计，分为dao，service，Controller，view层，层次清楚，低耦合，高内聚
 - 友好的代码结构及注释，便于阅读及二次开发
+- 使用分包分层设计，工程拆分，分为dao，service，Controller，view层，层次清楚，低耦合，高内聚。
 - 支持分布式部署，session集成了redis
 - 灵活的权限控制, 整合shiro，可控制到页面或按钮，满足绝大部分的权限需求,优化权限注解方便权限配置
 - 日志记录采用aop(LogAop类)方式，可对用户所有操作进行记录
 - 引入quartz定时任务，可动态完成任务的添加、修改、删除、暂停、恢复及日志查看等功能
-- 数据统计报表：丰富的报表统计功能
-- 利用beetl模板引擎对前台页面进行封装和拆分，使代码变得简洁，更加易维护
+- 引入swagger文档支持，方便编写API接口文档
+- 项目采用前后端分离架构，提升效率
 - 前端组件丰富，集成layuiadmin，基本涵盖了所有前端开发需求
 - 前端页面简洁优美，支持移动端
+- 数据统计报表：丰富的报表统计功能
 - 支持多种浏览器: Google, 火狐, IE,360等
+
 
 # 组织结构
 
-     com.zhonghe.active4j
-        •	com.zhonghe.active4j.common -- 通用代码
-        •	com.zhonghe.active4j.core -- 核心功能（redis、线程池、缓存、shiro等）
-        •	com.zhonghe.active4j.demo -- 示例
-        •	com.zhonghe.active4j.func -- 常用功能
-        •	com.zhonghe.active4j.func.captcha -- 验证码
-        •	com.zhonghe.active4j.func.email -- 邮件发送
-        •	com.zhonghe.active4j.func.export -- 导入导出
-        •	com.zhonghe.active4j.func.layedit -- 富文本编辑器
-        •	com.zhonghe.active4j.func.message -- 系统消息
-        •	com.zhonghe.active4j.func.pay -- 支付功能
-        •	com.zhonghe.active4j.func.sms -- 短信发送
-        •	com.zhonghe.active4j.func.timer -- 定时任务
-        •	com.zhonghe.active4j.func.upload -- 上传下载
-        •	com.zhonghe.active4j.monitor -- 系统监控/在线用户
-        •	com.zhonghe.active4j.system -- 系统管理
+```html
+active4j
+├── active4j-common  公有工具类工程
+    - com.active4j.common.cache 本地缓存
+    - com.active4j.common.context.util  容器工具
+    - com.active4j.common.func  常用功能组件
+    - com.active4j.common.redis 集成redis
+    - com.active4j.common.threadpool 集成线程池
+    - com.active4j.common.util  常用工具包
+    - com.active4j.common.web.config  springmvc配置
+├── active4j-entity  实体工程
+    - com.active4j.entity.base 基础实体
+    - com.active4j.entity.commcon 公用实体
+    - com.active4j.entity.func 系统常用组件功能实体
+    - com.active4j.entity.system 系统管理模块实体
+├── active4j-dao     dao层
+    - com.active4j.dao.config 数据源配置
+    - com.active4j.dao.func 系统常用组件功能
+    - com.active4j.dao.system.dao  系统管理模块
+    - com.active4j.dao.system.dao.sql sql文件
+├── active4j-service service层
+    - com.active4j.service.func 系统常用组件功能服务
+    - com.active4j.service.monitor 系统监控模块服务
+    - com.active4j.service.system 系统管理模块服务
+    - com.active4j.service.system.util 系统管理工具包
+├── active4j-web     controller层
+    - com.active4j.web.core 核心配置包，包括shiro、springmvc、swagger2等
+    - com.active4j.web.func 系统常用组件功能控制器
+    - com.active4j.web.monitor.controller 监控模块控制器
+    - com.active4j.web.system.controller 系统管理模块控制器
+    - com.active4j.web.system.wrapper 响应结果集包装工具包
+    - com.active4j.web.common.controller 公共控制器包
+├── active4j-ui      基于layui的前端UI，前后端分离
+
+
+```
+
 
 # 技术选型
 ### 服务端
@@ -92,7 +109,7 @@ Active4j-Boot是基于SpingBoot2.0轻量级的java快速开发框架。以Spring
 |SLF4J|日志组件|[http://www.slf4j.org/](http://www.slf4j.org/ "http://www.slf4j.org/")|
 |QcloudCOS|腾讯云存储|[https://www.qcloud.com/product/cos](https://www.qcloud.com/product/cos "https://www.qcloud.com/product/cos")|
 |Maven|项目构建管理|[http://maven.apache.org/](http://maven.apache.org/ "http://maven.apache.org/")|
-|Beetl|模版引擎|[http://ibeetl.com/](http://ibeetl.com/ "http://ibeetl.com/")|
+|swagger2|文档生成工具|[https://swagger.io/](https://swagger.io/ "https://swagger.io/")|
 |Apache Commons|工具类|[http://commons.apache.org/](http://commons.apache.org/ "http://commons.apache.org/")|
 |fastjson|JSON解析库|[https://github.com/alibaba/fastjson](https://github.com/alibaba/fastjson "https://github.com/alibaba/fastjson")|
 ### 前端
