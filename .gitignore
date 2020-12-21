@@ -11,3 +11,4 @@
 *.iws
 /active4j-web/src/main/resources/application-dev.properties
 active4j-web/src/main/resources/application-dev.properties
+active4j-web/src/main/resources/application-prod.properties
