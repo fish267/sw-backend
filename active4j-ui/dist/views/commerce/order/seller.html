@@ -6,7 +6,7 @@
         <label class="layui-form-label">订单编号</label>
         <div class="layui-input-inline">
             <script type="text/html" template>
-                <input type="text" value="18767773842" name="orderId" value="{{ d.params.orderId|| '' }}"
+                <input type="text" name="orderId" value="{{ d.params.orderId|| '' }}"
                        lay-verify="required" placeholder="orderId" autocomplete="off" class="layui-input">
             </script>
         </div>
@@ -68,7 +68,7 @@
         <label class="layui-form-label">手机</label>
         <div class="layui-input-inline">
             <script type="text/html" template>
-                <input type="number" value="18767773842" name="receiverPhone" value="{{ d.params.receiverPhone || '' }}"
+                <input type="number" name="receiverPhone" value="{{ d.params.receiverPhone || '' }}"
                        lay-verify="phone" placeholder="receiverPhone" autocomplete="off" class="layui-input">
             </script>
         </div>
@@ -118,6 +118,7 @@
                         class="layui-badge-dot layui-bg-orange"></span></button>
                 {{#    }else {    }}
                 <div class=" layui-input-inline">
+                    <input type="radio" name="afterSaleStatus" value="无售后" title="无售后">
                     <input type="radio" name="afterSaleStatus" value="售后受理" title="售后受理">
                     <input type="radio" name="afterSaleStatus" value="售后完结" title="售后完结">
                 </div>

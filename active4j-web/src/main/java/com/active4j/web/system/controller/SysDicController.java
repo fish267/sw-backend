@@ -1,21 +1,5 @@
 package com.active4j.web.system.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.active4j.common.util.MyBeanUtils;
 import com.active4j.common.web.controller.BaseController;
 import com.active4j.entity.base.annotation.Log;
@@ -32,12 +16,26 @@ import com.active4j.web.core.web.util.QueryUtils;
 import com.active4j.web.core.web.util.ResponseUtil;
 import com.active4j.web.system.wrapper.DicWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * 
@@ -87,18 +85,24 @@ public class SysDicController extends BaseController {
 	@ResponseBody
 	@ApiOperation(value="获取数据字典列表", notes="获取数据字典列表，树形结构显示", response=DicWrapper.class)
 	public void datagrid(SysDicEntity sysDicEntity, HttpServletRequest request, HttpServletResponse response) {
-		
-		//拼接查询条件
-		QueryWrapper<SysDicEntity> queryWrapper = QueryUtils.installQueryWrapper(sysDicEntity, request.getParameterMap());
-		
-		//执行查询
-		List<SysDicEntity> lstResult = sysDicService.list(queryWrapper);
-		
-		List<TreeSysDicModel> lstModes = getDicTree(lstResult);
 
-		ResponseUtil.write(response, new DicWrapper(lstModes).wrap());
-		
-	}
+        //拼接查询条件
+        QueryWrapper<SysDicEntity> queryWrapper = QueryUtils.installQueryWrapper(sysDicEntity, request.getParameterMap());
+
+        //执行查询
+        List<SysDicEntity> lstResult = sysDicService.list(queryWrapper);
+
+        List<TreeSysDicModel> lstModes = getDicTree(lstResult);
+
+        lstModes.sort(new Comparator<TreeSysDicModel>() {
+            @Override
+            public int compare(TreeSysDicModel treeSysDicModel, TreeSysDicModel t1) {
+                return treeSysDicModel.getName().compareTo(t1.getName());
+            }
+        });
+        ResponseUtil.write(response, new DicWrapper(lstModes).wrap());
+
+    }
 	
 	/**
 	 * 保存方法

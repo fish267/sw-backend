@@ -1,7 +1,7 @@
 package com.active4j.web.sw;
 
 
-import com.active4j.common.util.MyBeanUtils;
+import com.active4j.common.web.controller.BaseController;
 import com.active4j.entity.base.PageInfo;
 import com.active4j.entity.base.annotation.Log;
 import com.active4j.entity.base.model.LogType;
@@ -9,37 +9,30 @@ import com.active4j.entity.base.model.ResultJson;
 import com.active4j.entity.base.model.ValueLabelModel;
 import com.active4j.entity.base.wrapper.BaseWrapper;
 import com.active4j.entity.sw.OrderDetail;
-import com.active4j.entity.system.entity.SysUserEntity;
 import com.active4j.service.sw.IOrderDetailService;
-import com.active4j.service.system.service.SysUserService;
 import com.active4j.service.system.util.SystemUtils;
-import com.active4j.web.core.config.shiro.ShiroUtils;
 import com.active4j.web.core.web.util.QueryUtils;
 import com.active4j.web.core.web.util.ResponseUtil;
 import com.active4j.web.system.wrapper.SellerOrderDetailWrapper;
-import com.active4j.web.system.wrapper.UserWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.active4j.common.web.controller.BaseController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -159,8 +152,8 @@ public class OrderDetailController extends BaseController {
     public void logType(HttpServletRequest request, HttpServletResponse response) {
         Map<String, String> map = SystemUtils.getDictionaryMap("order_status");
         List<ValueLabelModel> lstModels = new ArrayList<ValueLabelModel>();
-        if(null != map && map.keySet().size() > 0) {
-            for(String key : map.keySet()) {
+        if (null != map && map.keySet().size() > 0) {
+            for (String key : map.keySet()) {
                 ValueLabelModel model = new ValueLabelModel();
                 model.setLabel(map.get(key));
                 model.setValue(key);
@@ -168,6 +161,12 @@ public class OrderDetailController extends BaseController {
             }
         }
 
+        lstModels.sort(new Comparator<ValueLabelModel>() {
+            @Override
+            public int compare(ValueLabelModel valueLabelModel, ValueLabelModel t1) {
+                return valueLabelModel.getValue().compareTo(t1.getValue());
+            }
+        });
         //结果处理,直接写到客户端
         ResponseUtil.write(response, new BaseWrapper<List<ValueLabelModel>>(lstModels).wrap());
     }

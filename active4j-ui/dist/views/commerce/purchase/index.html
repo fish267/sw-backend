@@ -3,14 +3,14 @@
 <div class="layui-card layadmin-header">
     <div class="layui-breadcrumb" lay-filter="breadcrumb">
         <a lay-href="">主页</a>
-        <a><cite>商品管理</cite></a>
+        <a><cite>采购管理</cite></a>
     </div>
 </div>
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">Goods DEMO</div>
+                <div class="layui-card-header">采购管理</div>
                 <div class="layui-card-body">
                     <div class="layui-form">
                         <div class="test-table-reload-btn" style="margin-bottom: 10px;">
@@ -40,8 +40,37 @@
                                             form.render('select'); //渲染该模板下的动态表单
                                         });
                                     };
+
                                 </script>
                             </div>
+
+                            <div class="layui-inline">
+
+                                <script lay-done="layui.data.done(d);" lay-type="post"
+                                        lay-url="{{layui.setter.baseUrl}}/commerce/goods/goodsStatusDict"
+                                        template type="text/html">
+                                    &nbsp;&nbsp;&nbsp;商品状态:
+                                    <div class="layui-input-inline">
+                                        <select name="goodsStatus" id="goodsStatus" class="layui-input">
+                                            <option value="">请选择</option>
+                                            {{# layui.each(d.data, function(index, item){ }}
+                                            <option value={{item.value}}>{{item.label}}</option>
+                                            {{# }) }}
+                                        </select>
+                                    </div>
+                                </script>
+                                <script>
+                                    layui.data.done = function(d){
+                                        layui.use(['form'], function(){
+                                            var form = layui.form;
+                                            form.render('select'); //渲染该模板下的动态表单
+                                        });
+                                    };
+
+                                </script>
+                            </div>
+
+
                             商品名称:
                             <div class="layui-inline">
                                 <input class="layui-input" name="goodsName" id="goodsName" autocomplete="on">
@@ -117,7 +146,7 @@
                     , {field: 'purchaseOrderNo', title: '采购单号'}
                     , {field: 'purchaseAmount', title: '采购金额' }
                     , {field: 'purchaseTransStyle', title: '采购运输方式', templet: "#trans-style"}
-                    , {field: 'purchaseStatus', title: '采购状态'}
+                    , {field: 'goodsStatus', title: '商品状态'}
                     , {field: 'memo', title: '备注信息'}
                     , {
                         field: 'createDate',
@@ -141,6 +170,7 @@
             queryData['orderId'] = $("#orderId").val();
             queryData['orderStatus'] = $("#orderStatus").val();
             queryData['goodsName'] = $("#goodsName").val();
+            queryData['goodsStatus'] = $("#goodsStatus").val();
             queryData['firstCommerceOrder'] = $("#firstCommerceOrder").val();
             //排序字段
             queryData['field'] = 'createDate';

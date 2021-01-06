@@ -1,13 +1,11 @@
 package com.active4j.entity.sw;
 
+import com.active4j.entity.base.BaseEntity;
 import com.active4j.entity.base.annotation.QueryField;
 import com.active4j.entity.base.model.QueryCondition;
-import com.baomidou.mybatisplus.annotation.*;
-import com.active4j.entity.base.BaseEntity;
-
-import java.time.LocalDateTime;
-
-import io.swagger.annotations.ApiModelProperty;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -50,15 +48,18 @@ public class Goods extends BaseEntity {
 
     private String purchaseAddress;
 
-    @QueryField(queryColumn="PURCHASE_ORDER_NO", condition= QueryCondition.eq)
+    @QueryField(queryColumn = "PURCHASE_ORDER_NO", condition = QueryCondition.eq)
     private String purchaseOrderNo;
+
+    @QueryField(queryColumn = "GOODS_STATUS", condition = QueryCondition.eq)
+    private String goodsStatus;
 
     private String purchaseAmount;
 
-    @QueryField(queryColumn="PURCHASE_TRANS_STYLE", condition= QueryCondition.eq)
+    @QueryField(queryColumn = "PURCHASE_TRANS_STYLE", condition = QueryCondition.eq)
     private String purchaseTransStyle;
 
-    @QueryField(queryColumn="FIRST_COMMERCE_ORDER", condition= QueryCondition.like)
+    @QueryField(queryColumn = "FIRST_COMMERCE_ORDER", condition = QueryCondition.like)
     private String firstCommerceOrder;
 
     private String depotStatus;

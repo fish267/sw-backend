@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -184,7 +185,76 @@ public class GoodsController extends BaseController {
                 lstModels.add(model);
             }
         }
+        lstModels.sort(new Comparator<ValueLabelModel>() {
+            @Override
+            public int compare(ValueLabelModel valueLabelModel, ValueLabelModel t1) {
+                return valueLabelModel.getValue().compareTo(t1.getValue());
+            }
+        });
+        //结果处理,直接写到客户端
+        ResponseUtil.write(response, new BaseWrapper<List<ValueLabelModel>>(lstModels).wrap());
+    }
 
+
+    /**
+     * @return void
+     * @description 页面获取日志类型
+     * @params
+     * @author guyp
+     * @time 2019年12月31日 上午10:06:01
+     */
+    @RequestMapping(value = "/deliveryStatusDict")
+    @ApiOperation(value = "获取日志类型", notes = "页面获取日志类型", response = BaseWrapper.class)
+    public void deliveryStatusType(HttpServletRequest request, HttpServletResponse response) {
+        Map<String, String> map = SystemUtils.getDictionaryMap("sw_delivery_status");
+        List<ValueLabelModel> lstModels = new ArrayList<ValueLabelModel>();
+        if (null != map && map.keySet().size() > 0) {
+            for (String key : map.keySet()) {
+                ValueLabelModel model = new ValueLabelModel();
+                model.setLabel(map.get(key));
+                model.setValue(key);
+                lstModels.add(model);
+            }
+        }
+
+        lstModels.sort(new Comparator<ValueLabelModel>() {
+            @Override
+            public int compare(ValueLabelModel valueLabelModel, ValueLabelModel t1) {
+                return valueLabelModel.getValue().compareTo(t1.getValue());
+            }
+        });
+        //结果处理,直接写到客户端
+        ResponseUtil.write(response, new BaseWrapper<List<ValueLabelModel>>(lstModels).wrap());
+    }
+
+
+    /**
+     * @return void
+     * @description 页面获取日志类型
+     * @params
+     * @author guyp
+     * @time 2019年12月31日 上午10:06:01
+     */
+    @RequestMapping(value = "/goodsStatusDict")
+    @ApiOperation(value = "获取日志类型", notes = "页面获取日志类型", response = BaseWrapper.class)
+    public void goodsStatusType(HttpServletRequest request, HttpServletResponse response) {
+        Map<String, String> map = SystemUtils.getDictionaryMap("sw_goods_status");
+        List<ValueLabelModel> lstModels = new ArrayList<ValueLabelModel>();
+        if (null != map && map.keySet().size() > 0) {
+            for (String key : map.keySet()) {
+                ValueLabelModel model = new ValueLabelModel();
+                model.setLabel(map.get(key));
+                model.setValue(key);
+                lstModels.add(model);
+            }
+        }
+
+        lstModels.sort(new Comparator<ValueLabelModel>() {
+            @Override
+            public int compare(ValueLabelModel valueLabelModel, ValueLabelModel t1) {
+                return valueLabelModel.getValue().compareTo(t1.getValue());
+            }
+        });
         //结果处理,直接写到客户端
         ResponseUtil.write(response, new BaseWrapper<List<ValueLabelModel>>(lstModels).wrap());
     }

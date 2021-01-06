@@ -1,7 +1,17 @@
 package com.active4j.web.system.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
+import com.active4j.common.redis.RedisApi;
+import com.active4j.entity.base.annotation.Log;
+import com.active4j.entity.base.model.AccessTokenModel;
+import com.active4j.entity.base.model.LogType;
+import com.active4j.entity.base.model.ResultJson;
+import com.active4j.entity.system.entity.SysUserEntity;
+import com.active4j.service.system.service.SysUserService;
+import com.active4j.web.core.config.shiro.ShiroUtils;
+import com.active4j.web.core.jwt.JwtUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -13,19 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.active4j.common.redis.RedisApi;
-import com.active4j.entity.base.annotation.Log;
-import com.active4j.entity.base.model.AccessTokenModel;
-import com.active4j.entity.base.model.LogType;
-import com.active4j.entity.base.model.ResultJson;
-import com.active4j.entity.system.entity.SysUserEntity;
-import com.active4j.service.system.service.SysUserService;
-import com.active4j.web.core.config.shiro.ShiroUtils;
-import com.active4j.web.core.jwt.JwtUtil;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 
@@ -86,7 +84,7 @@ public class LoginController {
 	public ResultJson loginAction(@ApiParam(name="username", value="用户名", required=true) String username, @ApiParam(name="password", value="密码", required=true) String password, 
 			@ApiParam(name="vercode", value="验证码", required=true) String vercode, HttpServletRequest request) {
 		ResultJson j = new ResultJson();
-		
+
 		try {
 			// 后端校验
 			if (StringUtils.isEmpty(username)) {
@@ -111,14 +109,14 @@ public class LoginController {
 //			String serverVercode = (String) redisApi.get(GlobalConstant.SESSION_KEY_OF_RAND_CODE + ":" + request.getSession().getId());
 			//从session中获取验证码
 			String serverVercode = (String) request.getSession().getAttribute(request.getSession().getId());
-			
+
 			// 验证码的校验
 			if (!StringUtils.equalsIgnoreCase(vercode, serverVercode)) {
 				j.setSuccess(false);
 				j.setMsg("验证码填写错误");
 				return j;
 			}
-			
+
 			// 用户存在校验
 			SysUserEntity sysUser = userService.getUserByUseName(username);
 			if (null == sysUser) {
@@ -126,7 +124,7 @@ public class LoginController {
 				j.setMsg("账号或密码不正确");
 				return j;
 			}
-			
+
 			// 密码校验
 			String userpassword = ShiroUtils.md5(password, sysUser.getSalt());
 			if(!StringUtils.equals(sysUser.getPassword(), userpassword)) {
@@ -138,10 +136,10 @@ public class LoginController {
 			//生成access_token
 			String accessToken = JwtUtil.sign(username, sysUser.getPassword());
 			j.setData(new AccessTokenModel(accessToken));
-			
+
 			//将access_token存入redis缓存
 			redisApi.set(JwtUtil.PREFIX_USER_TOKEN + accessToken, accessToken, (int)JwtUtil.EXPIRE_TIME / 1000);
-			
+
 		} catch (IncorrectCredentialsException e) {
 			j.setSuccess(false);
 			j.setMsg("用户名或密码填写错误");

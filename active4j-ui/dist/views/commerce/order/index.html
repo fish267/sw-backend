@@ -87,6 +87,7 @@
                             <button class="layui-btn layui-btn-sm" lay-event="doAdd">新增订单</button>
                         </div>
                     </script>
+
                     <!-- 表格操作按钮 -->
                     <script type="text/html" id="seller-order-tool">
                         <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
@@ -139,12 +140,12 @@
             where: {field: 'createDate', order: 'desc'},
             initColumn: function () {
                 return [[
-                    {type: 'numbers'}
+
                     , {field: 'id', title: 'ID', hide: true}
-                    , {field: 'shopName', title: '店铺名称'}
+                    , {field: 'shopName', title: '店铺名称', }
                     , {field: 'orderId', title: '订单编号'}
                     , {field: 'receiverName', title: '姓名'}
-                    , {field: 'receiverPhone', title: '手机'}
+                    , {field: 'receiverId', title: '身份ID', sort:true }
                     , {field: 'orderStatus', title: '订单状态', templet: "#order-status"}
                     , {field: 'memo', title: '备注信息'}
                     , {
@@ -349,7 +350,7 @@
             , height: 'full-180'
             , page: true
             , limit: 30
-            , autoSort: false
+
             , toolbar: Page.toolbar
             , where: Page.where
             , defaultToolbar: []

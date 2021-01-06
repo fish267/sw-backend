@@ -6,7 +6,7 @@
         <label class="layui-form-label">订单编号</label>
         <div class="layui-input-inline">
             <script type="text/html" template>
-                <input disabled type="text" value="18767773842" name="orderId" value="{{ d.params.orderId|| '' }}"
+                <input disabled type="text" name="orderId" value="{{ d.params.orderId|| '' }}"
                        lay-verify="required" placeholder="orderId" autocomplete="off" class="layui-input">
             </script>
         </div>
@@ -21,6 +21,30 @@
         </div>
     </div>
 
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品状态</label>
+        <div class="layui-input-inline">
+            <script lay-done="layui.data.done(d);" lay-url="{{layui.setter.baseUrl}}/commerce/goods/goodsStatusDict"
+                    template
+                    type="text/html">
+                <select name="goodsStatus">
+                    {{# layui.each(d.data, function(index, item){ }}
+                    <option value={{item.value}} {{ d.params.goodsStatus=== item.label ?
+                    'selected' : '' }}>{{item.label}}</option>
+                    {{# }) }}
+                </select>
+            </script>
+            <script>
+                layui.data.done = function (d) {
+                    layui.use(['form'], function () {
+                        var form = layui.form;
+                        form.render('select'); //渲染该模板下的动态表单
+                    });
+                };
+
+            </script>
+        </div>
+    </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">采购单号</label>
