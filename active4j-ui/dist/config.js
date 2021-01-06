@@ -8,23 +8,22 @@
  */
  
 layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
-  exports('setter',
-    container: 'ACTIVE4J_BOOT_PRO' //容器I
+  exports('setter', {
+    container: 'ACTIVE4J_BOOT_PRO' //容器ID
     ,base: layui.cache.base //记录layuiAdmin文件夹所在路径
     ,views: layui.cache.base + 'views/' //视图所在目录
     ,entry: 'index' //默认视图文件名
     ,engine: '.html' //视图文件后缀名
     ,pageTabs: false //是否开启页面选项卡功能。单页版不推荐开启
-    
+
     ,name: 'DEMO'
     ,tableName: 'layuiAdmin' //本地存储表名
     ,MOD_NAME: 'admin' //模块事件名
     ,baseUrl:'http://love67.top:9004/demo'  //前后端分离的后端请求地址
-//    ,baseUrl:'http://localhost:9004/demo'  //前后端分离的后端请求地址
     ,uiUrl:'http://localhost:8080/active4j-ui'
     
     ,debug: true //是否开启调试模式。如开启，接口异常时会抛出异常 URL 等信息
-    
+
     ,interceptor: true //是否开启未登入拦截
     
     //自定义请求字段
