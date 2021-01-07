@@ -1,22 +1,15 @@
 package com.active4j.entity.sw;
 
+import com.active4j.entity.base.BaseEntity;
 import com.active4j.entity.base.annotation.QueryField;
 import com.active4j.entity.base.model.QueryCondition;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.active4j.entity.base.BaseEntity;
-
-import java.time.LocalDateTime;
-import java.util.Date;
-
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Date;
 
 /**
  * <p>
@@ -94,4 +87,11 @@ public class OrderDetail extends BaseEntity {
 
     private String deliveryStatus;
 
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
 }

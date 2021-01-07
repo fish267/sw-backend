@@ -100,12 +100,14 @@ public class GoodsController extends BaseController {
         OrderDetail orderDetail = new OrderDetail();
         orderDetail.setOrderId(orderId);
         // 校验订单号是否存在
-        if (StringUtils.isEmpty(orderId) ||
-                null == iOrderDetailService.getOne(new QueryWrapper<>(orderDetail))) {
+        OrderDetail rawOrder = iOrderDetailService.getOne(new QueryWrapper<>(orderDetail));
+        if (StringUtils.isEmpty(orderId) || null == rawOrder) {
             resultJson.setSuccess(false);
             resultJson.setMsg("必须输入已经存在的订单号");
             return resultJson;
         }
+        goods.setOrderStatus(rawOrder.getOrderStatus());
+        // 更新订单状态
         try {
             if (StringUtils.isEmpty(goods.getId())) {
                 iGoodsService.save(goods);

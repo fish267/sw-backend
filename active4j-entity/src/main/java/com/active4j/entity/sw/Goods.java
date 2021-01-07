@@ -65,4 +65,12 @@ public class Goods extends BaseEntity {
     private String depotStatus;
 
     private String goodsWeight;
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
 }
