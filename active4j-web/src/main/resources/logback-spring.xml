@@ -5,7 +5,7 @@
 	<!-- kafka生产准生产在一台机器，由此区分 -->
 	<property name="Project_Name" value="active4j"/>
 	<property name="LOG_NAME" value="active4j"/>
-	<property name="LOG_DIR" value="./logs"/>
+	<property name="LOG_DIR" value="/home/fish/logs"/>
 	<property name="logFileNamePattern" value="${LOG_NAME}_%d{yyyy-MM-dd}_%i"/>
 	<property name="fileLayoutPattern"
 			  value="[${APP_Name}] [${Project_Name}] [%d] [%level] [%F] [%M] [%t:%L] [] [] [%m]%n"/>
