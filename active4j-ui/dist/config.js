@@ -19,7 +19,7 @@ layui.define(['laytpl', 'layer', 'element', 'util'], function(exports){
     ,name: 'DEMO'
     ,tableName: 'layuiAdmin' //本地存储表名
     ,MOD_NAME: 'admin' //模块事件名
-    ,baseUrl:'http://love67.top:9004/demo'  //前后端分离的后端请求地址
+    ,baseUrl:'http://pkciall.vip:9004/demo'  //前后端分离的后端请求地址
 //    ,baseUrl:'http://localhost:9004/demo'  //前后端分离的后端请求地址
     ,uiUrl:'http://localhost:8080/active4j-ui'
 
