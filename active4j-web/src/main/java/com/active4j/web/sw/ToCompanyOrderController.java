@@ -6,10 +6,13 @@ import com.active4j.entity.base.PageInfo;
 import com.active4j.entity.base.annotation.Log;
 import com.active4j.entity.base.model.LogType;
 import com.active4j.entity.base.model.ResultJson;
+import com.active4j.entity.func.export.entity.CompanyOrderDetailEntity;
 import com.active4j.entity.func.export.entity.ExportExampleEntity;
+import com.active4j.service.func.export.service.ExportCompanyOrderService;
 import com.active4j.service.func.export.service.ExportExampleService;
 import com.active4j.web.core.web.util.QueryUtils;
 import com.active4j.web.core.web.util.ResponseUtil;
+import com.active4j.web.func.export.wrapper.CompanyOrderDetailWrapper;
 import com.active4j.web.func.export.wrapper.ExportExampleWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -28,6 +31,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,8 +48,9 @@ import java.util.Map;
 @Api(value = "常用功能-导入导出", tags = {"导入导出操作接口"})
 public class ToCompanyOrderController extends BaseController {
 
+
     @Autowired
-    private ExportExampleService exportExampleService;
+    private ExportCompanyOrderService exportCompanyOrderService;
 
     /**
      * @return void
@@ -57,14 +62,15 @@ public class ToCompanyOrderController extends BaseController {
     @RequestMapping(value = "/datagrid")
     @ResponseBody
     @ApiOperation(value = "获取导入导出列表", notes = "获取导入导出列表", response = ExportExampleWrapper.class)
-    public void datagrid(ExportExampleEntity exportExampleEntity, PageInfo<ExportExampleEntity> page,
+    public void datagrid(CompanyOrderDetailEntity companyOrderDetailEntity, PageInfo<CompanyOrderDetailEntity> page,
                          HttpServletRequest request, HttpServletResponse response) {
         //拼接查询条件
-        QueryWrapper<ExportExampleEntity> queryWrapper = QueryUtils.installQueryWrapper(exportExampleEntity, request.getParameterMap());
+        QueryWrapper<CompanyOrderDetailEntity> queryWrapper = QueryUtils.installQueryWrapper(companyOrderDetailEntity,
+                request.getParameterMap());
         //执行查询
-        IPage<ExportExampleEntity> lstResult = exportExampleService.page(page.getPageEntity(), queryWrapper);
+        IPage<CompanyOrderDetailEntity> lstResult = exportCompanyOrderService.page(page.getPageEntity(), queryWrapper);
         //结果处理，直接写到客户端
-        ResponseUtil.write(response, new ExportExampleWrapper(lstResult).wrap());
+        ResponseUtil.write(response, new CompanyOrderDetailWrapper(lstResult).wrap());
     }
 
     /**
@@ -96,10 +102,10 @@ public class ToCompanyOrderController extends BaseController {
 				xls只有65536行、256列*/
                 if (StringUtils.equals("xlsx", extName)) {
                     //保存xlsx的内容
-                    exportExampleService.saveXlsx(inputStream);
+                    exportCompanyOrderService.saveXlsx(inputStream);
                 } else if (StringUtils.equals("xls", extName)) {
                     //保存xls的内容
-                    exportExampleService.saveXls(inputStream);
+                    exportCompanyOrderService.saveXlsx(inputStream);
                 } else {
                     j.setSuccess(false);
                     j.setMsg("您上传的文件包含不支持的格式，请重新上传");
@@ -129,36 +135,23 @@ public class ToCompanyOrderController extends BaseController {
      * @author guyp
      * @time 2019年12月18日 上午10:03:09
      */
-    @RequestMapping("/xls")
+    @RequestMapping("/xlsx")
     @ApiOperation(value = "导出xls文件", notes = "导出xls文件")
     @Log(type = LogType.normal, name = "导出文件", memo = "文件导出")
-    public void xls(@ApiParam(name = "name", value = "查询姓名") String name, HttpServletRequest request, HttpServletResponse response) {
+    public void xls(CompanyOrderDetailEntity companyOrderDetailEntity, HttpServletRequest request, HttpServletResponse response) {
         try {
+            //拼接查询条件
+            QueryWrapper<CompanyOrderDetailEntity> queryWrapper = QueryUtils.installQueryWrapper(companyOrderDetailEntity,
+                    request.getParameterMap());
+            //执行查询
+            List<CompanyOrderDetailEntity> lstResult = exportCompanyOrderService.list(queryWrapper);
+            //结果处理，直接写到客户端
             //导出xls文件
-            exportExampleService.exportXls(request, response, name);
+            exportCompanyOrderService.exportXlsx(request, response, lstResult);
         } catch (Exception e) {
             log.error("导出xls报错，错误信息：{}", e.getMessage());
             e.printStackTrace();
         }
     }
 
-    /**
-     * @return void
-     * @description 导出xlsx文件
-     * @params
-     * @author guyp
-     * @time 2019年12月18日 上午11:27:40
-     */
-    @RequestMapping("/xlsx")
-    @ApiOperation(value = "导出xlsx文件", notes = "导出xlsx文件")
-    @Log(type = LogType.normal, name = "导出文件", memo = "文件导出")
-    public void xlsx(@ApiParam(name = "name", value = "查询姓名") String name, HttpServletRequest request, HttpServletResponse response) {
-        try {
-            //导出xlsx文件
-            exportExampleService.exportXlsx(request, response, name);
-        } catch (Exception e) {
-            log.error("导出xls报错，错误信息：{}", e.getMessage());
-            e.printStackTrace();
-        }
-    }
 }
