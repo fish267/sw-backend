@@ -133,6 +133,8 @@ public class QueryUtils {
 				case like:
 					queryWrapper.like(column, value);
 					break;
+				case in:
+					queryWrapper.in(column, value);
 				default:
 				break;
 			}

@@ -20,8 +20,8 @@
                         <div class="layui-form-item">
                             <div class="layui-input-inline">
                                 <a class="layui-btn layui-btn-sm"
-                                   href="https://zh-active4j-1251505225.cos.ap-shanghai.myqcloud.com/20191217/492c22873b8e4b79a7f3198f1cf318c3.xls">Excel
-                                    模板下载</a>
+                                   href="https://gw.alipayobjects.com/os/bmw-prod/2d08f815-955c-42d7-9eb1-17fdbfd3f7b4.xlsx">
+                                    Excel 模板下载</a>
                             </div>
                             <div>
                                 <button class="layui-btn layui-btn-sm" id="uploadBtn">Excel 文件导入</button>
@@ -39,10 +39,82 @@
                 <div class="layui-card-body">
                     <div class="layui-form">
                         <div class="test-table-reload-btn" style="margin-bottom: 10px;">
-                            姓名：
+                            交易单号：
                             <div class="layui-inline">
-                                <input class="layui-input" name="name" id="name" autocomplete="off">
+                                <input class="layui-input" name="orderId" id="orderId" autocomplete="off">
                             </div>
+                            &nbsp;&nbsp;&nbsp; 国内运单号：
+                            <div class="layui-inline">
+                                <input class="layui-input" name="innerDeliveryNo" id="innerDeliveryNo"
+                                       autocomplete="off">
+                            </div>
+                            &nbsp;&nbsp;&nbsp; 国际运单号：
+                            <div class="layui-inline">
+                                <input class="layui-input" name="outDeliveryNo" id="outDeliveryNo" autocomplete="off">
+                            </div>
+
+                            <div><br></div>
+                            <div class="layui-inline">
+
+                                <script type="text/html" template
+                                        lay-url="{{layui.setter.baseUrl}}/commerce/order/orderStatusDict"
+                                        lay-type="post" lay-done="layui.data.done(d);">
+                                    &nbsp;订单状态：
+                                    <div class="layui-input-inline">
+                                        <select name="orderStatus" id="orderStatus" class="layui-input">
+                                            <option value="">请选择</option>
+                                            {{# layui.each(d.data, function(index, item){ }}
+                                            <option value={{item.value}}>{{item.label}}</option>
+                                            {{# }) }}
+                                        </select>
+                                    </div>
+                                </script>
+                                <script>
+                                    layui.data.done = function (d) {
+                                        layui.use(['form'], function () {
+                                            var form = layui.form;
+                                            form.render('select'); //渲染该模板下的动态表单
+                                        });
+                                    };
+                                </script>
+                            </div>
+                            <div class="layui-inline">
+
+                                <script type="text/html" template
+                                        lay-url="{{layui.setter.baseUrl}}/commerce/order/businessTypeDict"
+                                        lay-type="post" lay-done="layui.data.done(d);">
+                                    &nbsp;&nbsp;  业务类型：
+                                    <div class="layui-input-inline">
+                                        <select name="businessType" id="businessType" class="layui-input">
+                                            <option value="">请选择</option>
+                                            {{# layui.each(d.data, function(index, item){ }}
+                                            <option value={{item.value}}>{{item.label}}</option>
+                                            {{# }) }}
+                                        </select>
+                                    </div>
+                                </script>
+                                <script>
+                                    layui.data.done = function (d) {
+                                        layui.use(['form'], function () {
+                                            var form = layui.form;
+                                            form.render('select'); //渲染该模板下的动态表单
+                                        });
+                                    };
+                                </script>
+                            </div>
+
+                            &nbsp;&nbsp;&nbsp;下单时间:
+                            <div class="layui-input-inline">
+                                <input type="text" name="orderBeginTime" id="orderBeginTime" placeholder="请选择开始时间"
+                                       class="layui-input">
+                            </div>
+                            到：
+                            <div class="layui-input-inline">
+                                <input type="text" name="orderEndTime" id="orderEndTime" placeholder="请选择结束时间"
+                                       class="layui-input">
+                            </div>
+
+
                             <div class="layui-row" style="margin-top: 10px;">
                                 <div class="layui-col-md2 layui-col-md-offset10">
                                     <button id="btnSearch" class="layui-btn">搜索</button>
@@ -51,8 +123,8 @@
                             </div>
 
                         </div>
+
                     </div>
-                    <input type="hidden" id="clickValue" name="clickValue">
                     <table class="layui-hide" id="func-export-table" lay-filter="func-export-table"></table>
                     <!-- 头部工具栏 -->
                     <script type="text/html" id="func-export-toolbar">
@@ -73,12 +145,26 @@
 
 
 <script type="text/javascript">
-    layui.use(['index', 'table', 'upload'], function () {
+    layui.use(['index', 'table', 'upload', 'laydate', 'jquery'], function () {
         var admin = layui.admin;
         var table = layui.table;
         var $ = layui.$;
         var setter = layui.setter;
         var upload = layui.upload;
+        var view = layui.view;
+        var laydate = layui.laydate;
+
+        //初始化查询条件的时间控件
+        laydate.render({
+            elem: '#orderBeginTime'
+            , type: 'datetime'
+        });
+
+        laydate.render({
+            elem: '#orderEndTime'
+            , type: 'datetime'
+        });
+
 
         /**
          * 表格参数
@@ -91,12 +177,18 @@
             initColumn: function () {
                 return [[
                     {type: 'numbers'}
-                    , {field: 'id', title: '交易单号', width: 180}
+                    , {field: 'orderId', title: '交易单号', width: 150}
+                    , {field: 'orderStatus', title: '订单状态', width: 130}
+                    , {field: 'businessType', title: '业务类型', width: 100}
                     , {field: 'innerDeliveryNo', title: '国内运单号', width: 120}
                     , {field: 'outDeliveryNo', title: '国际运单号', width: 120}
-                    , {field: 'businessType', title: '业务类型', width: 100}
-                    , {field: 'orderStatus', title: '物流状态', width: 100}
-                    , {field: 'goodsDetail', title: '商品详情', width: 200}
+                    , {field: 'goodsDetail', title: '商品详情', width: 300}
+                    , {field: 'outDeliveryNo', title: '客户姓名', hide: true, width: 120}
+                    , {field: 'outDeliveryNo', title: '客户电话', hide: true, width: 120}
+                    , {field: 'outDeliveryNo', title: '客户地址', hide: true, width: 120}
+                    , {field: 'outDeliveryNo', title: '备注信息', hide: true, width: 120}
+                    , {field: 'outDeliveryNo', title: '变更记录', hide: true, width: 120}
+                    , {field: 'outDeliveryNo', title: '报文日志', hide: true, width: 120}
                     , {
                         field: 'orderCreateDate',
                         title: '订单创建时间',
@@ -106,24 +198,47 @@
                     , {
                         title: '操作',
                         width: 180,
-                        templet: '<div><button>查看</button></div>'
+                        templet: "<div><a class='layui-btn layui-btn-primary layui-btn-xs' lay-event='detail'>查看</a> </div>"
                     }
                 ]];
             }
         };
 
+        Page.detailAction = function (data) {
+            console.log(data);
+            admin.popup({
+                title: '查看',
+                id: 'sub-delivery-detail',
+                area: ['900px', '900px'],
+                success: function (layero, index) {
+                    view(this.id).render('commerce/company/sub', data).done(function () {
+                        form.render(null, 'sub-order-detail');
+                    });
+                }
+            });
+        }
         /**
          * 页面查询
          */
         Page.searchAction = function () {
             var queryData = {};
-            //查询字段
-            queryData['name'] = $("#name").val();
+            // 查询字段
+            queryData['orderId'] = $("#orderId").val();
+            queryData['innerDeliveryNo'] = $("#innerDeliveryNo").val();
+            queryData['outDeliveryNo'] = $("#outDeliveryNo").val();
+            queryData['businessType'] = $("#businessType").val();
+            queryData['orderStatus'] = $("#orderStatus").val();
+            queryData['orderCreateDate_begin'] = $("#orderBeginTime").val();
+            queryData['orderCreateDate_end'] = $("#orderEndTime").val();
+            //
             //排序字段
             queryData['field'] = 'createDate';
             queryData['order'] = 'desc';
 
+            console.log('query condition:');
+            console.log(queryData);
             table.reload(Page.tableId, {where: queryData});
+            return queryData;
         }
 
 
@@ -184,18 +299,20 @@
             }
         })
 
-        //导出xlx文件，这里不能用ajax请求，ajax请求无法弹出下载保存对话框
-        Page.doXls = function () {
-            var name = $("#name").val();
-            location.href = setter.baseUrl + '/sw/export/xls?name=' + name + '&access_token=' + layui.data(setter.tableName).access_token;
-        }
-
         //导出xlxs文件，这里不能用ajax请求，ajax请求无法弹出下载保存对话框
         Page.doXlsx = function () {
-            var name = $("#name").val();
-            location.href = setter.baseUrl + '/sw/export/xlsx?name=' + name + '&access_token=' + layui.data(setter.tableName).access_token;
-        }
+            var queryData = Page.searchAction();
+            queryData['access_token'] = layui.data(setter.tableName).access_token;
+            console.log(queryData);
 
+            var url = setter.baseUrl + '/sw/export/xlsx?';
+            debugger;
+            for (var ele in queryData) {
+                url = url + ele + '=' + queryData[ele] + '&';
+            }
+            console.log(url);
+            location.href = url;
+        }
 
         /**
          * 表格渲染
@@ -242,6 +359,9 @@
             //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             var layEvent = obj.event;
 
+            if (layEvent == 'detail') {
+                Page.detailAction(data);
+            }
         });
 
 

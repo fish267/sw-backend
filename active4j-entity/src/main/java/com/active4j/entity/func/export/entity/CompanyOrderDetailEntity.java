@@ -59,10 +59,13 @@ public class CompanyOrderDetailEntity extends BaseEntity {
 
     private String companyName;
 
+    @QueryField(queryColumn = "INNER_DELIVERY_NO", condition = QueryCondition.eq)
     private String innerDeliveryNo;
 
+    @QueryField(queryColumn = "OUT_DELIVERY_NO", condition = QueryCondition.eq)
     private String outDeliveryNo;
 
+    @QueryField(queryColumn = "BUSINESS_TYPE", condition = QueryCondition.eq)
     private String businessType;
 
     private String messageLog;

@@ -1,0 +1,193 @@
+<div class="layui-form" lay-filter="sub-order-detail" id="sub-order-detail" style="padding: 20px 30px 0 0;">
+    <script type="text/html" template>
+        <input type="hidden" name="id" value="{{ d.params.id  ||  '' }}">
+    </script>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">订单编号</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" disabled   name="orderId"
+                       value="{{ d.params.orderId ||  '' }}" lay-verify="" placeholder="orderId"
+                       autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">创建时间</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" class="layui-input" name="orderCreateDate"
+                       value="{{ layui.laytpl.toDateString(d.orderCreateDate) || ''}}"
+                       id="seller-date-control"  lay-verify="required">
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">订单状态</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template lay-url="{{layui.setter.baseUrl}}/commerce/order/orderStatusDict"
+                    lay-done="layui.data.done(d);">
+                <select name="orderStatus">
+                    {{# layui.each(d.data, function(index, item){ }}
+                    <option value={{item.value}} {{ d.params.orderStatus=== item.label ?
+                    'selected' : '' }}>{{item.label}}</option>
+                    {{# }) }}
+                </select>
+            </script>
+            <script>
+                layui.data.done = function (d) {
+                    layui.use(['form'], function () {
+                        var form = layui.form;
+                        form.render('select'); //渲染该模板下的动态表单
+                    });
+                };
+            </script>
+        </div>
+    </div>
+
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">国内运单号</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text"   name="innerDeliveryNo" value="{{ d.params.innerDeliveryNo  ||  '' }}"
+                       lay-verify="" placeholder="outDeliveryNo" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">国际运单号</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text"   name="outDeliveryNo" value="{{ d.params.outDeliveryNo ||  '' }}" lay-verify=""
+                       placeholder="outDeliveryNo" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">业务类型</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template lay-url="{{layui.setter.baseUrl}}/commerce/order/businessTypeDict"
+                    lay-done="layui.data.done(d);">
+                <select name="businessType">
+                    {{# layui.each(d.data, function(index, item){ }}
+                    <option value={{item.value}} {{ d.params.businessType=== item.label ?
+                    'selected' : '' }}>{{item.label}}</option>
+                    {{# }) }}
+                </select>
+            </script>
+            <script>
+                layui.data.done = function (d) {
+                    layui.use(['form'], function () {
+                        var form = layui.form;
+                        form.render('select'); //渲染该模板下的动态表单
+                    });
+                };
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">公司名称</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text"   name="companyName" value="{{ d.params.companyName ||  '' }}" lay-verify=""
+                       placeholder="companyName" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">收件人姓名</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text"   name="receiverName" value="{{ d.params.receiverName ||  '' }}" lay-verify=""
+                       placeholder="receiverName" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">收件人电话</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text"   name="receiverPhone" value="{{ d.params.receiverPhone ||  '' }}" lay-verify=""
+                       placeholder="receiverPhone" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">收件人地址</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text"   name="receiverAddress" value="{{ d.params.receiverAddress ||  '' }}" lay-verify=""
+                       placeholder="receiverAddress" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品明细</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <textarea name="goodsDetail" style="width: 400px; height: 100px;" autocomplete="off" placeholder="memo"
+                          class="layui-textarea">{{ d.params.goodsDetail  ||  '' }}</textarea>
+            </script>
+        </div>
+    </div>
+    <div>
+        <br>
+        <hr/>
+        <br>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注信息</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <textarea name="memo" style="width: 400px; height: 100px;" autocomplete="off" placeholder="memo"
+                          class="layui-textarea">{{ d.params.memo  ||  '' }}</textarea>
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">变更记录</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <textarea name="orderChangeLog" style="width: 400px; height: 300px;" autocomplete="off" placeholder="memo"
+                          class="layui-textarea">{{ d.params.orderChangeLog  ||  '' }}</textarea>
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">报文记录</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <textarea name="messageLog" style="width: 400px; height: 100px;" autocomplete="off" placeholder="messageLog"
+                          class="layui-textarea">{{ d.params.messageLog  ||  '' }}</textarea>
+            </script>
+        </div>
+    </div>
+
+
+
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="sub-delivery-save" id="sub-delivery-save" value="保存">
+        <input type="button" lay-submit lay-filter="sys-user-cancel" id="sys-user-cancel" value="取消">
+    </div>
+</div>
+
+<script type="text/javascript">
+    layui.use('dtree', function () {
+        var $ = layui.$;
+        var admin = layui.admin;
+        var view = layui.view;
+        var setter = layui.setter;
+        var dtree = layui.dtree;
+        var layer = layui.layer;
+        var form = layui.form;
+
+    })
+</script>

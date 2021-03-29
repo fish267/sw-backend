@@ -94,9 +94,9 @@ public class ExportCompanyOrderServiceImpl extends ServiceImpl<CompanyOrderDetai
                 } else if (j == 11 && null != obj) {
                     export.setMemo(obj.toString());
                 } else if (j == 12 && null != obj) {
-                    export.setMessageLog(obj.toString());
-                } else if (j == 13 && null != obj) {
                     export.setOrderChangeLog(obj.toString());
+                } else if (j == 13 && null != obj) {
+                    export.setMessageLog(obj.toString());
                 }
             }
             // 判断是插入还是更新
@@ -158,7 +158,7 @@ public class ExportCompanyOrderServiceImpl extends ServiceImpl<CompanyOrderDetai
             }
             if (!skipAttribute.contains(key) &&
                     !originHashMap.get(key).toString().equals(newHashMap.get(key).toString())) {
-                compareContent.add(String.format("\n %s 变更，原值: %s, 更新后: %s",
+                compareContent.add(String.format("\n %s 变更， 更新后: %s，原值: %s,",
                         key, originHashMap.get(key).toString(), newHashMap.get(key).toString()));
             }
         }

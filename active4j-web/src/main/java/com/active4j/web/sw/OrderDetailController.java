@@ -170,6 +170,42 @@ public class OrderDetailController extends BaseController {
         //结果处理,直接写到客户端
         ResponseUtil.write(response, new BaseWrapper<List<ValueLabelModel>>(lstModels).wrap());
     }
+
+
+    /**
+     *
+     * @description
+     *  	页面获取日志类型
+     * @params
+     * @return void
+     * @author guyp
+     * @time 2019年12月31日 上午10:06:01
+     */
+    @RequestMapping(value="/businessTypeDict")
+    @ApiOperation(value="获取业务类型", notes="页面获取业务类型", response=BaseWrapper.class)
+    public void businessTypeDict(HttpServletRequest request, HttpServletResponse response) {
+        Map<String, String> map = SystemUtils.getDictionaryMap("business_type");
+        List<ValueLabelModel> lstModels = new ArrayList<ValueLabelModel>();
+        if (null != map && map.keySet().size() > 0) {
+            for (String key : map.keySet()) {
+                ValueLabelModel model = new ValueLabelModel();
+                model.setLabel(map.get(key));
+                model.setValue(key);
+                lstModels.add(model);
+            }
+        }
+
+        lstModels.sort(new Comparator<ValueLabelModel>() {
+            @Override
+            public int compare(ValueLabelModel valueLabelModel, ValueLabelModel t1) {
+                return valueLabelModel.getValue().compareTo(t1.getValue());
+            }
+        });
+        //结果处理,直接写到客户端
+        ResponseUtil.write(response, new BaseWrapper<List<ValueLabelModel>>(lstModels).wrap());
+    }
+
+
     /**
      *
      * @description
