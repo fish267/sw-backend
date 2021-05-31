@@ -172,6 +172,7 @@
         var Page = {
             tableId: 'func-export-table',
             url: setter.baseUrl + '/sw/export/datagrid',
+            deleteUrl: setter.baseUrl + '/sw/export/delete',
             toolbar: '#func-export-toolbar',
             where: {field: 'createDate', order: 'desc'},
             initColumn: function () {
@@ -198,11 +199,38 @@
                     , {
                         title: '操作',
                         width: 180,
-                        templet: "<div><a class='layui-btn layui-btn-primary layui-btn-xs' lay-event='detail'>查看</a> </div>"
+                        templet: "<div><a class='layui-btn layui-btn-primary layui-btn-xs' lay-event='detail'>查看</a> " +
+                            "<a class='layui-btn layui-btn-danger layui-btn-xs' lay-event='del'>删除</a> </div>"
                     }
                 ]];
             }
         };
+        /**
+         * 删除表格数据
+         */
+        Page.deleteAction = function (obj) {
+            console.log('delete order ');
+            layer.confirm('真的确定要删除么', function (index) {
+
+                //提交 Ajax进行后端删除
+                admin.req({
+                    type: "post",
+                    url: Page.deleteUrl,
+                    data: {id: obj.data.id},
+                    done: function (res) {
+                        if (res.success) {
+                            CXL.success(res.msg);
+                            //表格删除
+                            obj.del();
+                        } else {
+                            CXL.warn(res.msg);
+                        }
+                    }
+                });
+
+                layer.close(index);
+            });
+        }
 
         Page.detailAction = function (data) {
             console.log(data);
@@ -306,7 +334,6 @@
             console.log(queryData);
 
             var url = setter.baseUrl + '/sw/export/xlsx?';
-            debugger;
             for (var ele in queryData) {
                 url = url + ele + '=' + queryData[ele] + '&';
             }
@@ -361,6 +388,10 @@
 
             if (layEvent == 'detail') {
                 Page.detailAction(data);
+            }
+            //删除操作
+            else if (layEvent === 'del') {
+                Page.deleteAction(obj);
             }
         });
 

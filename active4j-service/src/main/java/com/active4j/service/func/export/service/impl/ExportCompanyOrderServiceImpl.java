@@ -1,25 +1,20 @@
 package com.active4j.service.func.export.service.impl;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.ObjectUtil;
 import com.active4j.common.func.export.util.ExcelUtil;
 import com.active4j.common.func.export.util.ExportUtil;
 import com.active4j.common.util.DateUtils;
-import com.active4j.dao.func.export.dao.ExportExampleDao;
 import com.active4j.dao.sw.CompanyOrderDetailMapper;
 import com.active4j.entity.func.export.entity.CompanyOrderDetailEntity;
-import com.active4j.entity.func.export.entity.ExportExampleEntity;
-import com.active4j.entity.sw.CompanyOrderDetail;
+import com.active4j.entity.sw.ChangeLog;
 import com.active4j.service.func.export.service.ExportCompanyOrderService;
-import com.active4j.service.func.export.service.ExportExampleService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.active4j.service.sw.IChangeLogService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,12 +22,13 @@ import org.springframework.util.FileCopyUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 import static com.active4j.common.util.MyBeanUtils.copyBean2Map;
+import static com.active4j.entity.common.GlobalBizConstant.COMPANY_ORDER_CHANGE_LOG;
+import static com.active4j.entity.common.GlobalBizConstant.COMPANY_ORDER_STATUS_CHANGE_LOG;
 
 /**
  * @author guyp
@@ -46,6 +42,10 @@ import static com.active4j.common.util.MyBeanUtils.copyBean2Map;
 @Slf4j
 public class ExportCompanyOrderServiceImpl extends ServiceImpl<CompanyOrderDetailMapper, CompanyOrderDetailEntity> implements
         ExportCompanyOrderService {
+
+
+    @Autowired
+    private IChangeLogService iChangeLogService;
 
     /**
      * @return void
@@ -70,7 +70,6 @@ public class ExportCompanyOrderServiceImpl extends ServiceImpl<CompanyOrderDetai
                 //属性赋值
                 if (j == 0 && null != obj) {
                     export.setOrderId(obj.toString());
-                    export.setId(obj.toString());
                 } else if (j == 1 && null != obj) {
                     export.setCompanyName(obj.toString());
                 } else if (j == 2 && null != obj) {
@@ -99,21 +98,11 @@ public class ExportCompanyOrderServiceImpl extends ServiceImpl<CompanyOrderDetai
                     export.setMessageLog(obj.toString());
                 }
             }
-            // 判断是插入还是更新
-            CompanyOrderDetailEntity queryObject = this.getById(export.getId());
-            if (queryObject == null) {
-                export.setOrderChangeLog(DateUtils.getNow().toString() + "  订单录入:\n" + export.toString());
-            } else {
-                //
-                List<String> compareContent = diffTwoObject(export, queryObject);
-                if (compareContent.size() != 0) {
-                    export.setOrderChangeLog("\n" + export.getOrderChangeLog() + "\n" +
-                            DateUtils.getNow().toString() + "订单更新");
-                    for (String content : compareContent) {
-                        export.setOrderChangeLog(export.getOrderChangeLog() + content);
-                    }
-                }
+            // ID 为订单号与国内运单号拼接而成
+            if (StringUtils.isNotEmpty(export.getOrderId()) && StringUtils.isNotEmpty(export.getInnerDeliveryNo())) {
+                export.setId(export.getOrderId() + export.getInnerDeliveryNo());
             }
+            saveToChangeLog(export);
             //实体不为空就假如集合
             if (null != export) {
                 lstExports.add(export);
@@ -122,6 +111,49 @@ public class ExportCompanyOrderServiceImpl extends ServiceImpl<CompanyOrderDetai
 
         //批量保存
         this.saveOrUpdateBatch(lstExports);
+    }
+
+    /**
+     * 变更记录，存储到 ChangeLog
+     *
+     * @param export
+     */
+    private void saveToChangeLog(CompanyOrderDetailEntity export) {
+        // 判断是插入还是更新
+        CompanyOrderDetailEntity queryObject = this.getById(export.getId());
+        // 将变更日志，落库到 change_log
+        if (queryObject == null) {
+            String value = "订单录入:\n" + export.toString();
+            ChangeLog changeLog = new ChangeLog();
+            changeLog.setDictKey(export.getId());
+            changeLog.setValue(value);
+            changeLog.setType(COMPANY_ORDER_CHANGE_LOG);
+            iChangeLogService.save(changeLog);
+        } else {
+            // UPDATE 逐条记录
+            List<String> compareContent = diffTwoObject(export, queryObject);
+            if (compareContent.size() != 0) {
+                //
+                ChangeLog changeLog = new ChangeLog();
+                changeLog.setDictKey(export.getId());
+                changeLog.setType(COMPANY_ORDER_CHANGE_LOG);
+                String value = "订单更新:\n";
+                for (String content : compareContent) {
+                    value += content;
+                }
+                changeLog.setValue(value);
+                iChangeLogService.save(changeLog);
+            }
+            // 记录物流变更状态
+            if (!export.getOrderStatus().equals(queryObject.getOrderStatus())) {
+                String value = String.format("物流状态变更：\n" + queryObject.getOrderStatus());
+                ChangeLog changeLog = new ChangeLog();
+                changeLog.setDictKey(export.getId());
+                changeLog.setValue(value);
+                changeLog.setType(COMPANY_ORDER_STATUS_CHANGE_LOG);
+                iChangeLogService.save(changeLog);
+            }
+        }
     }
 
     /**
@@ -158,11 +190,36 @@ public class ExportCompanyOrderServiceImpl extends ServiceImpl<CompanyOrderDetai
             }
             if (!skipAttribute.contains(key) &&
                     !originHashMap.get(key).toString().equals(newHashMap.get(key).toString())) {
-                compareContent.add(String.format("\n %s 变更， 更新后: %s，原值: %s,",
+                compareContent.add(String.format("\n %s: 更新后=%s，原值=%s,",
                         key, originHashMap.get(key).toString(), newHashMap.get(key).toString()));
             }
         }
+
+        // 需求需要将原始JSON 字段呈现出来
+        if (compareContent.size() > 0) {
+            compareContent.add("\n 源数据: " + fetchTableDetail(skipAttribute, originHashMap) +
+                    "\n 新数据: " + fetchTableDetail(skipAttribute, newHashMap));
+        }
         return compareContent;
+    }
+
+    /**
+     * 根据排除掉的属性值，获取JSON数据
+     *
+     * @param columns
+     * @param hashMap
+     * @return
+     */
+    String fetchTableDetail(List<String> columns, HashMap<String, Object> hashMap) {
+        HashMap<String, Object> ret = new HashMap<>();
+        for (String col : hashMap.keySet()) {
+            if (!columns.contains(col)) {
+                ret.put(col, hashMap.get(col));
+            }
+        }
+        ret.remove("class");
+        Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+        return gson.toJson(ret);
     }
 
     /**

@@ -152,11 +152,23 @@
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">变更记录</label>
+        <label class="layui-form-label">变更详情</label>
         <div class="layui-input-inline">
             <script type="text/html" template>
-                <textarea name="orderChangeLog" style="width: 400px; height: 300px;" autocomplete="off" placeholder="memo"
+                <textarea name="orderChangeLog" style="width: 670px; height: 600px;" autocomplete="off"
+                          placeholder="memo"
                           class="layui-textarea">{{ d.params.orderChangeLog  ||  '' }}</textarea>
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">物流变更</label>
+        <div class="layui-input-inline">
+            <script template type="text/html">
+                <textarea name="extendInfo" style="width: 270px; height: 200px;" autocomplete="off"
+                          placeholder="extendInfo"
+                          class="layui-textarea">{{ d.params.extendInfo  ||  '' }}</textarea>
             </script>
         </div>
     </div>
@@ -165,12 +177,12 @@
         <label class="layui-form-label">报文记录</label>
         <div class="layui-input-inline">
             <script type="text/html" template>
-                <textarea name="messageLog" style="width: 400px; height: 100px;" autocomplete="off" placeholder="messageLog"
+                <textarea name="messageLog" style="width: 400px; height: 100px;" autocomplete="off"
+                          placeholder="messageLog"
                           class="layui-textarea">{{ d.params.messageLog  ||  '' }}</textarea>
             </script>
         </div>
     </div>
-
 
 
     <div class="layui-form-item layui-hide">
